@@ -4,7 +4,7 @@
     <!-- Fragmento de código que será substituído pelo conteúdo do fragmento "heads" -->
     <div th:replace="fragments/heads :: heads"></div>
 
-    <title>Adicionar Professor</title>
+    <title>Adicionar Responsavel</title>
     <style>
         .mensagem {
             color: red;
@@ -21,10 +21,10 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Cadastro de <b>Alunos</b></h2>
+                    <h2>Cadastro de <b>Responsavel</b></h2>
                 </div>
                 <div class="col-md-6" style="text-align: right;">
-                    <a th:href="@{/aluno}" class="btn btn-primary">
+                    <a th:href="@{/responsavel}" class="btn btn-primary">
                         Listagem <i class="fas fa-list"></i>
                     </a>
                 </div>
@@ -38,11 +38,11 @@
             </div>
 
             <!-- Formulário de cadastro de alunos th:action="@{/aluno/salvar} recurso do Thymeleaf -->
-            <form th:action="@{/professor/salvar}" th:object="${professor}" method="post">
+            <form th:action="@{/responsavel/salvar}" th:object="${responsavel}" method="post">
 
                 <div class="card">
                     <div class="card-header">
-                        Dados do Professor
+                        Dados do Responsavel
                     </div>
                     <div class="card_body">
 

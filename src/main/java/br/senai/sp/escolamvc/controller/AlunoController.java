@@ -115,35 +115,6 @@ public class AlunoController {
         // Retorna o template aluno/alterar.html
         return "aluno/alterar";
     }
-
-    @PostMapping("/alterar/{id}")
-    public String alterar(@PathVariable("id") Long id, @Valid Aluno aluno,
-                          BindingResult result, RedirectAttributes attributes) {
-
-        // Se houver erro de validação, retorna para o template alunos/alterar.html
-        if (result.hasErrors()) {
-            return "aluno/alterar";
-        }
-
-        // Busca o aluno no banco de dados
-        Aluno alunoAtualizado = alunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
-
-
-        // Seta os dados do aluno
-        alunoAtualizado.setMatricula(aluno.getMatricula());
-        alunoAtualizado.setNome(aluno.getNome());
-        alunoAtualizado.setEmail(aluno.getEmail());
-        alunoAtualizado.setCpf(aluno.getCpf());
-
-        // Salva o aluno no banco de dados
-        alunoRepository.save(alunoAtualizado);
-
-        // Adiciona uma mensagem que será exibida no template
-        attributes.addFlashAttribute("mensagem",
-                "Aluno atualizado com sucesso!");
-
-        // Redireciona para a página de listagem de alunos
-        return "redirect:/aluno";
-    }
+    
 }
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Fragmento de código que será substituído pelo conteúdo do fragmento "heads" -->
+    <div th:replace="fragments/heads :: heads"></div>
+    <title>Cadastro de Responsaveles</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/header :: cabecalho"></div>
+    <div class="row">
+
+        <div class="col">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Cadastro de <b>Responsavel</b></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Pesquisar -->
+                    <form th:action="@{/responsavel/buscar}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="nome"/>
+                            <button class="btn btn-primary" type="submit" value="Buscar">
+                                Buscar <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-6">
+                    <!-- cadastrar -->
+                    <a style="float: right" th:href="@{/responsavel/form-inserir}" class="btn btn-success">
+                        Cadastrar <i class="fa-solid fa-floppy-disk"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <span th:text="${mensagem}"></span>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>CPF</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${responsaveis.empty}">
+                <td colspan="2">Sem responsaveis</td>
+            </tr>
+            <tr th:each="responsavel : ${responsaveis}">
+                <td><span th:text="${responsavel.id}"> Id </span></td>
+                <td><span th:text="${responsavel.nome}"> Nome </span></td>
+                <td><span th:text="${responsavel.email}"> Email </span></td>
+                <td><span th:text="${responsavel.cpf}"> CPF </span></td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
+                       th:href="@{/responsavel/excluir/{id}(id=${responsavel.id})}"
+                       th:data-confirm-delete="|Você gostaria de apagar ${responsavel.nome}?|"
+                       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                        Apagar <i class="fa-solid fa-trash-can"></i>
+                    </a>
+
+                    <a class="btn btn-outline-primary btn-sm"
+                       th:href="@{/responsavel/alterar/{id}(id=${responsavel.id})}">Editar <i
+                            class="fa-solid fa-pen-to-square"></i>
+                    </a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div th:replace="fragments/footer :: footer">
+</div>
+</body>
+
+</html>

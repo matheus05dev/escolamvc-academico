@@ -28,7 +28,8 @@
             </div>
 
             <!-- Formulário de cadastro de alunos th:action="@{/aluno/salvar} recurso do Thymeleaf -->
-            <form th:action="@{/aluno/alterar/{id}(id=${aluno.id})}"  th:object="${aluno}" method="post">
+            <form th:action="@{/aluno/salvar}" th:object="${aluno}" method="post">
+                <input th:type="hidden" th:field="*{id}">
 
                 <input type="hidden" th:field="*{id}">
 
@@ -90,12 +91,12 @@
                 </div>
                 <input  class="btn btn-primary" type="submit" value="Gravar"/>
             </form>
-
         </div>
     </div>
 
     <!-- Fragmento de código que será substituído pelo conteúdo do fragmento "footer" -->
     <div th:replace="fragments/footer :: footer">
     </div>
+</div>
 </body>
 </html>
