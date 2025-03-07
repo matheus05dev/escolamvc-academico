@@ -8,4 +8,11 @@ import java.util.List;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     List<Aluno> findAlunosByNomeContaining(String nome);
+
+    Aluno findAlunoByCpf(String cpf);
+
+    List<Aluno> findAlunosByNomeContainingOrCpfContaining(
+            String nome,
+            String cpf
+    );
 }

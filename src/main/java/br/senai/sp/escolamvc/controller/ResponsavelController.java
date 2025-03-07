@@ -1,6 +1,5 @@
 package br.senai.sp.escolamvc.controller;
 
-import br.senai.sp.escolamvc.model.Aluno;
 import br.senai.sp.escolamvc.model.Responsavel;
 import br.senai.sp.escolamvc.repository.ResponsavelRepository;
 import jakarta.validation.Valid;
@@ -17,131 +16,126 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/responsavel")
 public class ResponsavelController {
 
     @Autowired
-    private ResponsavelRepository responsavelRepository;
+    ResponsavelRepository responsavelRepository;
 
     @PostMapping("/buscar")
-    public String buscar(@Param("nome") String nome, Model model) {
-        if (nome == null) {
+    public String buscar(@Param("nome") String nome, Model model){
+        if(nome == null){
             model.addAttribute("responsaveis", responsavelRepository.findAll());
             return "responsavel/listagem";
         }
-        List<Responsavel> responsaveisBuscadosNoBanco = responsavelRepository.findResponsavelsByNomeContaining(nome);
+
+        List<Responsavel> responsaveisBuscadosNoBanco =
+                responsavelRepository.findResponsavelsByNomeContaining(nome);
         model.addAttribute("responsaveis", responsaveisBuscadosNoBanco);
+
         return "responsavel/listagem";
     }
 
 
 
-    @GetMapping("/form-inserir")
-    public String formInserir(Model model) {
-        Responsavel Responsavel = new Responsavel();
-        model.addAttribute("responsavel", new Responsavel());
-
-        return "responsavel/inserir";
-
-    }
-
-    @PostMapping("/salvar")
-    public String salvarResponsavel(@Valid Responsavel Responsavel, BindingResult result,
-                              RedirectAttributes attributes) {
-
-
-        if (result.hasErrors()) {
-            return "responsavel/inserir";
-        }
-
-        // Salva o aluno no banco de dados
-        responsavelRepository.save(Responsavel);
-
-        // Adiciona uma mensagem que será exibida no template
-        attributes.addFlashAttribute("mensagem", "Responsavel salvo com sucesso!");
-
-        // Redireciona para a página de listagem de alunos
-        return "redirect:/responsavel/form-inserir";
-    }
-
-
+    /*
+     * Método que direciona para templates/responsaveis/listagem.html
+     */
     @GetMapping
     public String listagem(Model model) {
 
-        // Busca a lista de alunos no banco de dados
-        List<Responsavel> listaResponsavel = responsavelRepository.findAll();
+        // Busca a lista de responsaveis no banco de dados
+        List<Responsavel> listaResponsaveis = responsavelRepository.findAll();
 
-        // Adiciona a lista de alunos no objeto model para ser carregado no template
-        model.addAttribute("responsaveis", listaResponsavel);
+        // Adiciona a lista de responsaveis no objeto model para ser carregado no template
+        model.addAttribute("responsaveis", listaResponsaveis);
 
-        // Retorna o template aluno/listagem.html
+        // Retorna o template responsavel/listagem.html
         return "responsavel/listagem";
     }
 
     /*
-     * Método para excluir um aluno
+     * Método de acesso à página http://localhost:8080/responsavel/novo
+     */
+    @GetMapping("/form-inserir")
+    public String formInserir(Model model){
+
+        model.addAttribute("responsavel", new Responsavel());
+        // templates/responsavel/inserir.html
+        return "responsavel/inserir";
+    }
+
+    @PostMapping("/salvar")
+    public String salvarResponsavel(
+            @Valid Responsavel responsavel,
+            BindingResult result,
+            RedirectAttributes attributes) {
+
+        // Se houver erro de validação, retorna para o template responsaveis/inserir.html
+        if (result.hasErrors()){
+
+            if(responsavel.getId() != null){
+                return "responsavel/alterar";
+            }
+
+            return "responsavel/inserir";
+        }
+
+        // Salva o responsavel no banco de dados
+        responsavelRepository.save(responsavel);
+
+        // Adiciona uma mensagem que será exibida no template
+        attributes.addFlashAttribute("mensagem", "Responsavel salvo com sucesso!");
+
+        // Redireciona para a página de listagem de responsaveis
+        return "redirect:/responsavel";
+    }
+
+
+
+    /*
+     * Método para excluir um responsavel
      */
     @GetMapping("/excluir/{id}")
     public String excluir(@PathVariable("id") Long id,
                           RedirectAttributes attributes) {
 
-        // Busca o aluno no banco de dados
-        Responsavel Responsavel = responsavelRepository.findById(id).orElseThrow(()
+        // Busca o responsavel no banco de dados
+        Responsavel responsavel = responsavelRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("ID inválido"));
 
-        // Exclui o aluno do banco de dados
-        responsavelRepository.delete(Responsavel);
+        // Exclui o responsavel do banco de dados
+        responsavelRepository.delete(responsavel);
 
         // Adiciona uma mensagem que será exibida no template
         attributes.addFlashAttribute("mensagem",
                 "Responsavel excluído com sucesso!");
 
-        // Redireciona para a página de listagem de alunos
+        // Redireciona para a página de listagem de responsaveis
         return "redirect:/responsavel";
     }
+
+
+
     /*
-     * Método que direciona para templates/alunos/alterar.html
+     * Método que direciona para templates/responsaveis/alterar.html
      */
     @GetMapping("/alterar/{id}")
     public String alterar(@PathVariable("id") Long id, Model model) {
 
-        // Busca o aluno no banco de dados
-        Responsavel Responsavel = responsavelRepository.findById(id).orElseThrow(()
+        // Busca o responsavel no banco de dados
+        Responsavel responsavel = responsavelRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("ID inválido"));
 
-        // Adiciona o aluno no objeto model para ser carregado no formulário
-        model.addAttribute("responsavel", Responsavel);
+        // Adiciona o responsavel no objeto model para ser carregado no formulário
+        model.addAttribute("responsavel", responsavel);
 
-        // Retorna o template aluno/alterar.html
+        // Retorna o template responsavel/alterar.html
         return "responsavel/alterar";
     }
-    @PostMapping("/alterar/{id}")
-    public String alterar(@PathVariable("id") Long id, @Valid Responsavel Responsavel,
-                          BindingResult result, RedirectAttributes attributes) {
-
-        // Se houver erro de validação, retorna para o template alunos/alterar.html
-        if (result.hasErrors()) {
-            return "responsavel/alterar";
-        }
-
-        // Busca o aluno no banco de dados
-        Responsavel ResponsavelAtualizado = responsavelRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
 
 
-        // Seta os dados do aluno
-        ResponsavelAtualizado.setNome(Responsavel.getNome());
-        ResponsavelAtualizado.setEmail(Responsavel.getEmail());
-        ResponsavelAtualizado.setCpf(Responsavel.getCpf());
 
-        // Salva o aluno no banco de dados
-        responsavelRepository.save(ResponsavelAtualizado);
-
-        // Adiciona uma mensagem que será exibida no template
-        attributes.addFlashAttribute("mensagem",
-                "Responsavel atualizado com sucesso!");
-
-        // Redireciona para a página de listagem de alunos
-        return "redirect:/responsavel";
-    }
 }

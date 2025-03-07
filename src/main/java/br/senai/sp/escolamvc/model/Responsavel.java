@@ -6,5 +6,4 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue(value = "R")
 @Entity
 public class Responsavel extends Pessoa {
-
 }

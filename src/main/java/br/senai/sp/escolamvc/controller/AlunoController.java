@@ -14,56 +14,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.beans.ConstructorProperties;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/aluno")
 public class AlunoController {
 
     @Autowired
-    private AlunoRepository alunoRepository;
+    AlunoRepository alunoRepository;
 
     @PostMapping("/buscar")
-    public String buscar(@Param("nome") String nome, Model model) {
-        if (nome == null) {
+    public String buscar(@Param("nome") String nome, Model model){
+        if(nome == null){
             model.addAttribute("alunos", alunoRepository.findAll());
             return "aluno/listagem";
         }
-        List<Aluno> alunosBuscadosNoBanco = alunoRepository.findAlunosByNomeContaining(nome);
+
+        List<Aluno> alunosBuscadosNoBanco =
+                alunoRepository.findAlunosByNomeContaining(nome);
         model.addAttribute("alunos", alunosBuscadosNoBanco);
+
         return "aluno/listagem";
     }
 
-    @GetMapping("/form-inserir")
-    public String formInserir(Model model) {
-        Aluno aluno = new Aluno();
-        model.addAttribute("aluno", new Aluno());
-
-        return "aluno/inserir";
-
-    }
-
-    @PostMapping("/salvar")
-    public String salvarAluno(@Valid Aluno aluno, BindingResult result,
-                              RedirectAttributes attributes) {
-
-        // Se houver erro de validação, retorna para o template alunos/inserir.html
-        if (result.hasErrors()) {
-            return "aluno/inserir";
-        }
-
-        // Salva o aluno no banco de dados
-        alunoRepository.save(aluno);
-
-        // Adiciona uma mensagem que será exibida no template
-        attributes.addFlashAttribute("mensagem", "Aluno salvo com sucesso!");
-
-        // Redireciona para a página de listagem de alunos
-        return "redirect:/aluno/form-inserir";
-    }
 
 
+    /*
+     * Método que direciona para templates/alunos/listagem.html
+     */
     @GetMapping
     public String listagem(Model model) {
 
@@ -76,6 +55,45 @@ public class AlunoController {
         // Retorna o template aluno/listagem.html
         return "aluno/listagem";
     }
+
+    /*
+     * Método de acesso à página http://localhost:8080/aluno/novo
+     */
+    @GetMapping("/form-inserir")
+    public String formInserir(Model model){
+
+        model.addAttribute("aluno", new Aluno());
+        // templates/aluno/inserir.html
+        return "aluno/inserir";
+    }
+
+    @PostMapping("/salvar")
+    public String salvarAluno(
+            @Valid Aluno aluno,
+            BindingResult result,
+            RedirectAttributes attributes) {
+
+        // Se houver erro de validação, retorna para o template alunos/inserir.html
+        if (result.hasErrors()){
+
+            if(aluno.getId() != null){
+                return "aluno/alterar";
+            }
+
+            return "aluno/inserir";
+        }
+
+        // Salva o aluno no banco de dados
+        alunoRepository.save(aluno);
+
+        // Adiciona uma mensagem que será exibida no template
+        attributes.addFlashAttribute("mensagem", "Aluno salvo com sucesso!");
+
+        // Redireciona para a página de listagem de alunos
+        return "redirect:/aluno";
+    }
+
+
 
     /*
      * Método para excluir um aluno
@@ -99,6 +117,8 @@ public class AlunoController {
         return "redirect:/aluno";
     }
 
+
+
     /*
      * Método que direciona para templates/alunos/alterar.html
      */
@@ -115,6 +135,10 @@ public class AlunoController {
         // Retorna o template aluno/alterar.html
         return "aluno/alterar";
     }
-    
-}
 
+
+
+
+
+
+}

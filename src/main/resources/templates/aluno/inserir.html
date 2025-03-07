@@ -68,7 +68,7 @@
 
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">CPF:</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-12">
                                     <!-- th:field="*{nome}" recurso do Thymeleaf. Carrega o atributo nome do objeto aluno -->
                                     <input class="form-control" type="text" th:field="*{cpf}">
                                 </div>
@@ -81,7 +81,7 @@
 
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Matrícula:</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-12">
 
                                     <!-- th:field="*{matricula}" recurso do Thymeleaf. Carrega o atributo matricula do objeto aluno -->
                                     <input class="form-control" type="text" th:field="*{matricula}">
@@ -125,19 +125,24 @@
                         </div>
 
                     </div>
+
                 </div>
+
+
                 <div class="card mt-3">
                     <div class="card-header">
                         Endereço
                     </div>
                     <div class="card_body">
                         <div class="container">
+
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">CEP:</label>
                                 <div class="col-sm-3">
 
                                     <!-- th:field="*{email}" recurso do Thymeleaf. Carrega o atributo email do objeto aluno -->
-                                    <input th:id="cep" onchange="pesquisacep(this.value);" class="form-control" type="text" th:field="*{endereco.cep}">
+                                    <input onchange="pesquisacep(this.value);" th:id="cep"  class="form-control" type="text" th:field="*{endereco.cep}">
                                 </div>
                                 <div class="col-sm-12">
 
@@ -146,6 +151,7 @@
                                           th:errors="*{endereco.cep}"></span>
                                 </div>
                             </div>
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Logradouro:</label>
                                 <div class="col-sm-12">
@@ -160,12 +166,13 @@
                                           th:errors="*{endereco.logradouro}"></span>
                                 </div>
                             </div>
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Número:</label>
                                 <div class="col-sm-3">
 
                                     <!-- th:field="*{email}" recurso do Thymeleaf. Carrega o atributo email do objeto aluno -->
-                                    <input class="form-control" type="int" th:field="*{endereco.numero}">
+                                    <input class="form-control" type="text" th:field="*{endereco.numero}">
                                 </div>
                                 <div class="col-sm-12">
 
@@ -174,7 +181,8 @@
                                           th:errors="*{endereco.numero}"></span>
                                 </div>
                             </div>
-                            <div class="row mb-3 col-sm-12">
+
+                            <div class="row mb-12 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Complemento:</label>
                                 <div class="col-sm-12">
 
@@ -188,6 +196,7 @@
                                           th:errors="*{endereco.complemento}"></span>
                                 </div>
                             </div>
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Bairro:</label>
                                 <div class="col-sm-12">
@@ -202,6 +211,7 @@
                                           th:errors="*{endereco.bairro}"></span>
                                 </div>
                             </div>
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">Cidade:</label>
                                 <div class="col-sm-12">
@@ -216,6 +226,7 @@
                                           th:errors="*{endereco.cidade}"></span>
                                 </div>
                             </div>
+
                             <div class="row mb-3 col-sm-12">
                                 <label class="col-sm-12 col-form-label">UF:</label>
                                 <div class="col-sm-3">
@@ -230,9 +241,15 @@
                                           th:errors="*{endereco.uf}"></span>
                                 </div>
                             </div>
+
+
+
+
                         </div>
                     </div>
                 </div>
+
+
                 <button class="btn btn-success mt-2" type="submit"> Salvar <i class="fas fa-save"></i></button>
             </form>
 
